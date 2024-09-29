@@ -7,7 +7,7 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
-    email = Column(String(50), unique=True, index=True)
+    user_email = Column(String(50), unique=True, index=True)
     resume_url = Column(String(100))
     job_preferences = Column(JSON)
     hashed_password = Column(String(255))

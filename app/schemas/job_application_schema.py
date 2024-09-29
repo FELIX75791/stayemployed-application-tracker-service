@@ -10,6 +10,7 @@ class StatusEnum(str, Enum):
 
 class JobApplicationCreate(BaseModel):
     user_id: int
+    user_email: str
     job_id: int
     application_date: datetime
     notes: str
@@ -17,6 +18,7 @@ class JobApplicationCreate(BaseModel):
 class JobApplicationResponse(BaseModel):
     application_id: int
     user_id: int
+    user_email: str
     job_id: int
     status: StatusEnum
     application_date: datetime
