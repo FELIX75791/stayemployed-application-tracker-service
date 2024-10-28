@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 from app.db import Base, engine
 from app.routes import job_application_routes
+from app.middleware.logging_middleware import BeforeAfterLoggingMiddleware
 import uvicorn
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
+
+app.add_middleware(BeforeAfterLoggingMiddleware)
 
 app.include_router(job_application_routes.router)
 
