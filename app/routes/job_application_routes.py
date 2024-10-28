@@ -24,8 +24,8 @@ def get_user_application(application_id: int, db: Session = Depends(get_db), use
 
 
 @router.get("/my_applications", response_model=List[JobApplicationResponse])
-def get_applications_by_user(user_email: str = Depends(get_current_user_email), db: Session = Depends(get_db)):
-    applications = get_applications_by_user_email(db, user_email)
+def get_applications_by_user(page: int = 1, user_email: str = Depends(get_current_user_email), db: Session = Depends(get_db)):
+    applications = get_applications_by_user_email(db, user_email, page)
     if not applications:
         raise HTTPException(status_code=404, detail="No job applications found for this user")
     return applications

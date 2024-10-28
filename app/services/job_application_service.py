@@ -18,10 +18,13 @@ def get_application_by_app_id(db: Session, application_id: int):
     return (db.query(JobApplication)
             .filter(JobApplication.application_id == application_id).first())
 
-def get_applications_by_user_email(db: Session, user_email: str):
-    return (db.query(JobApplication)
-            .filter(JobApplication.user_email == user_email).all())
-
+def get_applications_by_user_email(db: Session, user_email: str, page: int):
+    page_size = 10
+    offset = (page - 1) * page_size
+    applications = (db.query(JobApplication)
+                    .filter(JobApplication.user_email == user_email)
+                    .offset(offset).limit(page_size).all())
+    return applications
 
 def update_job_application(db: Session, application_id: int, update_data: JobApplicationUpdate):
     application = db.query(JobApplication).filter(JobApplication.application_id == application_id).first()
