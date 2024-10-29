@@ -8,5 +8,6 @@ class JobApplication(Base):
     user_email = Column(String(50), nullable=False)
     job_id = Column(Integer, nullable=False)
     status = Column(Enum("Applied", "Interviewing", "Offer", "Rejected"), default="Applied")
+    resume_url = Column(String(100))
     application_date = Column(DateTime)
     notes = Column(String(255))

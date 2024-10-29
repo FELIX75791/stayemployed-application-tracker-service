@@ -47,6 +47,8 @@ async def update_job_application(db: AsyncSession, application_id: int, update_d
                 application.status = update_data.status
             if update_data.notes is not None:
                 application.notes = update_data.notes
+            if update_data.resume_url is not None:
+                application.resume_url = update_data.resume_url
             await db.commit()
             await db.refresh(application)
             return application

@@ -12,18 +12,21 @@ class StatusEnum(str, Enum):
 class JobApplicationCreate(BaseModel):
     job_id: int
     status: StatusEnum = StatusEnum.applied
-    notes: str
+    resume_url: Optional[str]
+    notes: Optional[str]
 
 class JobApplicationResponse(BaseModel):
     application_id: int
     user_email: str
     job_id: int
     status: StatusEnum
+    resume_url: Optional[str]
     application_date: datetime
-    notes: str
+    notes: Optional[str]
 
 class JobApplicationUpdate(BaseModel):
     status: Optional[StatusEnum]
+    resume_url: Optional[str]
     notes: Optional[str]
 
     class Config:
