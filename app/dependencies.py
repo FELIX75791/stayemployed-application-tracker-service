@@ -1,11 +1,6 @@
-from fastapi import Depends, HTTPException, status, requests
+from fastapi import Depends, HTTPException
 from jose import JWTError
-from sqlalchemy.orm import Session
-import requests
-from .services.auth_service import decode_access_token
-from .db import get_db
-from .services.auth_service import oauth2_scheme
-
+from .services.auth_service import decode_access_token, oauth2_scheme
 
 def get_current_user_email(token: str = Depends(oauth2_scheme)) -> str:
     try:
@@ -15,5 +10,4 @@ def get_current_user_email(token: str = Depends(oauth2_scheme)) -> str:
             raise HTTPException(status_code=401, detail="Invalid token")
     except JWTError as e:
         raise HTTPException(status_code=401, detail=f"JWTError: {e}")
-
     return user_email
