@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List, Dict
 from enum import Enum
 
 class StatusEnum(str, Enum):
@@ -23,6 +23,10 @@ class JobApplicationResponse(BaseModel):
     resume_url: Optional[str]
     application_date: datetime
     notes: Optional[str]
+    links: List[Dict[str, str]]
+
+    class Config:
+        orm_mode = True
 
 class JobApplicationUpdate(BaseModel):
     status: Optional[StatusEnum]
