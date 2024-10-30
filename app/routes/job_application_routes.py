@@ -23,10 +23,10 @@ def get_user_application(
         user_email: str = Depends(get_current_user_email)
 ):
     application = get_application_by_app_id(db, application_id)
-    if application.user_email != user_email:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not Permitted")
     if application is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job application not found")
+    if application.user_email != user_email:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not Permitted")
 
     links = [
         {"rel": "self", "href": f"/my_applications/{application_id}", "method": "GET"},
