@@ -10,7 +10,7 @@ class StatusEnum(str, Enum):
     rejected = "Rejected"
 
 class JobApplicationCreate(BaseModel):
-    job_id: int
+    job_url: str
     status: StatusEnum = StatusEnum.applied
     resume_url: Optional[str]
     notes: Optional[str]
@@ -18,7 +18,7 @@ class JobApplicationCreate(BaseModel):
 class JobApplicationResponse(BaseModel):
     application_id: int
     user_email: str
-    job_id: int
+    job_url: str
     status: StatusEnum
     resume_url: Optional[str]
     application_date: datetime
