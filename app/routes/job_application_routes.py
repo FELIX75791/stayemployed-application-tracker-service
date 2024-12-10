@@ -45,7 +45,7 @@ def get_applications_by_user(
 ):
     applications = get_applications_by_user_email(db, user_email, page)
     if not applications:
-        return []
+        return {"total_count": 0, "applications": []}
 
     total_count = get_total_application_count_by_user_email(db, user_email)
 
