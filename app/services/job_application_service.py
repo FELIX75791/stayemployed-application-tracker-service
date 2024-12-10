@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from sqlalchemy import func
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,6 +24,14 @@ def get_applications_by_user_email(db: Session, user_email: str, page: int):
         .limit(page_size)
     )
     return result.scalars().all()
+
+def get_total_application_count_by_user_email(db: Session, user_email: str) -> int:
+    total_count = db.execute(
+        select(func.count())
+        .select_from(JobApplication)
+        .filter(JobApplication.user_email == user_email)
+    ).scalar_one()
+    return total_count
 
 async def create_job_application(db: AsyncSession, application_data: JobApplicationCreate, user_email: str):
     async with lock:

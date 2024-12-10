@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Dict, Any
 from ..schemas.job_application_schema import JobApplicationResponse, JobApplicationUpdate, JobApplicationCreate
 from ..services.job_application_service import (
     get_application_by_app_id,
     get_applications_by_user_email,
     create_job_application,
     update_job_application,
-    delete_application
+    delete_application, get_total_application_count_by_user_email
 )
 from ..dependencies import get_current_user_email
 from ..db import get_async_db, get_sync_db
@@ -37,7 +37,7 @@ def get_user_application(
     response = JobApplicationResponse(**application.__dict__, links=links)
     return response
 
-@router.get("/my_applications", response_model=List[JobApplicationResponse], status_code=status.HTTP_200_OK)
+@router.get("/my_applications", response_model=Dict[str, Any], status_code=status.HTTP_200_OK)
 def get_applications_by_user(
         page: int = 1,
         user_email: str = Depends(get_current_user_email),
@@ -46,6 +46,8 @@ def get_applications_by_user(
     applications = get_applications_by_user_email(db, user_email, page)
     if not applications:
         return []
+
+    total_count = get_total_application_count_by_user_email(db, user_email)
 
     responses = []
     for app in applications:
@@ -56,7 +58,7 @@ def get_applications_by_user(
         ]
         responses.append(JobApplicationResponse(**app.__dict__, links=links))
 
-    return responses
+    return {"total_count": total_count, "applications": responses}
 
 @router.post("/my_applications", response_model=JobApplicationResponse, status_code=status.HTTP_201_CREATED)
 async def create_application(
