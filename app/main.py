@@ -5,6 +5,7 @@ from app.routes import job_application_routes
 from app.middleware.logging_middleware import BeforeAfterLoggingMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+
 app = FastAPI()
 
 Base.metadata.create_all(bind=sync_engine)
@@ -12,16 +13,13 @@ Base.metadata.create_all(bind=sync_engine)
 app.add_middleware(BeforeAfterLoggingMiddleware)
 
 # Configure CORS
-origins = [
-    "*"
-]
-
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,             # Allow credentials (e.g., cookies, authorization headers)
-    allow_methods=["*"],                # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],                # Allow all HTTP headers
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include API routes
