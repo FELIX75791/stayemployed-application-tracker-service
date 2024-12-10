@@ -45,7 +45,7 @@ def get_applications_by_user(
 ):
     applications = get_applications_by_user_email(db, user_email, page)
     if not applications:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No job applications found for this user")
+        return []
 
     responses = []
     for app in applications:
